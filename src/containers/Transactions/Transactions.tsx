@@ -11,8 +11,6 @@ const Transactions = () => {
   const transactions = useAppSelector(selectTransactions);
   const pageLoading = useAppSelector(selectTransactionsLoading);
 
-  let totalAmount = 0;
-
   const getExtendedTransactions = useCallback(async () => {
     await dispatch(fetchAllCategories());
     await dispatch(fetchAllTransactions());
@@ -22,13 +20,14 @@ const Transactions = () => {
     void getExtendedTransactions();
   }, [getExtendedTransactions]);
 
-  transactions.forEach(transaction => {
-    if (transaction.type === "income") {
-      totalAmount = totalAmount + transaction.amount;
-    } else {
-      totalAmount = totalAmount - transaction.amount;
-    }
-  });
+  const total = transactions.reduce((acc, transaction) => {
+      if (transaction.type === "income") {
+        return acc + transaction.amount;
+      } else {
+        return acc - transaction.amount;
+      }
+    }, 0);
+
 
   let transactionsContent = (
     transactions.map(transaction => {
@@ -39,7 +38,7 @@ const Transactions = () => {
   return (
     <>
       <div className="w-25 py-2 border border-dark border-2 my-2 text-center rounded-2">
-        <h4 className="text-uppercase m-0">Total: {totalAmount} KGS</h4>
+        <h4 className="text-uppercase m-0">Total: {total} KGS</h4>
       </div>
       <div>
         {pageLoading ? <LoadSpinner/> : transactionsContent}
