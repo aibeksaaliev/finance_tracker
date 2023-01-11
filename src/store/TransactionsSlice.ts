@@ -16,6 +16,8 @@ interface TransactionsState {
   pageLoading: boolean;
   formLoading: boolean;
   deleteLoading: false | string;
+  modalConfirmStatus: boolean;
+  deleteConfirm: boolean;
 }
 
 const initialState: TransactionsState = {
@@ -25,12 +27,27 @@ const initialState: TransactionsState = {
   transaction: null,
   formLoading: false,
   deleteLoading: false,
+  modalConfirmStatus: false,
+  deleteConfirm: false,
 }
 
 export const TransactionsSlice = createSlice({
   name: "transactions",
   initialState,
-  reducers: {},
+  reducers: {
+    showModal: (state) => {
+      state.modalConfirmStatus = true;
+    },
+    closeModal: (state) => {
+      state.modalConfirmStatus = false;
+    },
+    confirmDelete: (state) => {
+      state.deleteConfirm = true;
+    },
+    cancelDelete: (state) => {
+      state.deleteConfirm = false;
+    },
+  },
   extraReducers: builder => {
     builder.addCase(createTransaction.pending, (state) => {
       state.createLoading = true;
@@ -88,9 +105,12 @@ export const TransactionsSlice = createSlice({
 });
 
 export const TransactionsReducer = TransactionsSlice.reducer;
+export const {showModal, closeModal, confirmDelete, cancelDelete} = TransactionsSlice.actions;
 export const selectTransactions = (state: RootState) => state.transactions.transactions;
 export const selectTransaction = (state: RootState) => state.transactions.transaction;
 export const selectCreateTransactionLoading = (state: RootState) => state.transactions.createLoading;
 export const selectTransactionsLoading = (state: RootState) => state.transactions.pageLoading;
 export const selectTransactionFormLoading = (state: RootState) => state.transactions.formLoading;
 export const selectTransactionDeleteLoading = (state: RootState) => state.transactions.deleteLoading;
+export const selectModalTransactionStatus = (state: RootState) => state.transactions.modalConfirmStatus;
+export const selectDeleteStatus = (state: RootState) => state.transactions.deleteConfirm;

@@ -3,9 +3,10 @@ import {Button, Card} from "react-bootstrap";
 import {useNavigate} from "react-router-dom";
 import {CategoryType} from "../../types";
 import {useAppDispatch, useAppSelector} from "../../app/hooks";
-import {deleteOneCategory, fetchAllCategories} from "../../store/CategoriesThunks";
 import {selectDeleteLoading} from "../../store/CategoriesSlice";
 import ButtonSpinner from "../ButtonSpinner/ButtonSpinner";
+import {showModal} from "../../store/TransactionsSlice";
+import ModalConfirm from "../ModalConfirm/ModalConfirm";
 
 interface CategoryCardProps {
   category: CategoryType;
@@ -20,9 +21,8 @@ const CategoryCard: React.FC<CategoryCardProps> = ({category}) => {
     navigate("/categories/edit-category/" + id);
   };
 
-  const removeCategory = async (id: string) => {
-    await dispatch(deleteOneCategory(id));
-    await dispatch(fetchAllCategories());
+  const removeCategory = async () => {
+    await dispatch(showModal());
   };
 
   return (
@@ -40,12 +40,13 @@ const CategoryCard: React.FC<CategoryCardProps> = ({category}) => {
           <Button
             variant="danger"
             disabled={deleteLoading ? deleteLoading === category.id : false}
-            onClick={() => removeCategory(category.id)}
+            onClick={removeCategory}
           >
             {deleteLoading === category.id ? <ButtonSpinner/> : <i className="bi bi-trash3-fill"></i>}
           </Button>
         </div>
       </Card.Body>
+      <ModalConfirm id={category.id}/>
     </Card>
   );
 };

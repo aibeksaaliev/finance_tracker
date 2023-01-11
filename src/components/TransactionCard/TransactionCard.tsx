@@ -4,9 +4,9 @@ import dayjs from "dayjs";
 import {useNavigate} from "react-router-dom";
 import {ExtendedTransactionType} from "../../types";
 import {useAppDispatch, useAppSelector} from "../../app/hooks";
-import {deleteOneTransaction, fetchAllTransactions} from "../../store/TransactionsThunks";
-import {selectTransactionDeleteLoading} from "../../store/TransactionsSlice";
+import {selectTransactionDeleteLoading, showModal} from "../../store/TransactionsSlice";
 import ButtonSpinner from "../ButtonSpinner/ButtonSpinner";
+import ModalConfirm from "../ModalConfirm/ModalConfirm";
 
 interface TransactionCardProps {
   transaction: ExtendedTransactionType;
@@ -21,9 +21,8 @@ const TransactionCard: React.FC<TransactionCardProps> = ({transaction}) => {
     navigate("/edit-transaction/" + id);
   };
 
-  const deleteTransaction = async (id: string) => {
-    await dispatch(deleteOneTransaction(id));
-    await dispatch(fetchAllTransactions());
+  const deleteTransaction = async () => {
+    await dispatch(showModal());
   };
 
   return (
@@ -52,13 +51,14 @@ const TransactionCard: React.FC<TransactionCardProps> = ({transaction}) => {
           </Button>
           <Button
             variant="danger"
-            onClick={() => deleteTransaction(transaction.transactionId)}
+            onClick={deleteTransaction}
             disabled={deleteLoading ? deleteLoading === transaction.transactionId : false}
           >
             {deleteLoading === transaction.transactionId ? <ButtonSpinner/> : <i className="bi bi-trash3-fill"></i>}
           </Button>
         </div>
       </Card.Body>
+      <ModalConfirm id={transaction.transactionId}/>
     </Card>
   );
 };

@@ -20,7 +20,6 @@ const Transactions = () => {
 
   useEffect(() => {
     void getExtendedTransactions();
-    console.log(transactions);
   }, [getExtendedTransactions]);
 
   transactions.forEach(transaction => {
