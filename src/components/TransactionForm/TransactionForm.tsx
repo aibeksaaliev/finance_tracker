@@ -60,6 +60,7 @@ const TransactionForm: React.FC<TransactionFormProps> = ({existingTransaction, i
 
   const onFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
     if (id) {
       await dispatch(updateOneTransaction({
         id: id,
@@ -75,16 +76,26 @@ const TransactionForm: React.FC<TransactionFormProps> = ({existingTransaction, i
     <Form onSubmit={onFormSubmit}>
       <Form.Group>
         <Form.Label>Type</Form.Label>
-        <Form.Select name="type" value={type} onChange={onTypeChange}>
-          <option hidden>Choose a type</option>
+        <Form.Select
+          name="type"
+          value={type}
+          onChange={onTypeChange}
+          required
+        >
+          <option value="" hidden>Choose a type</option>
           <option value="expense">Expense</option>
           <option value="income">Income</option>
         </Form.Select>
       </Form.Group>
       <Form.Group className="mt-3">
         <Form.Label>Category</Form.Label>
-        <Form.Select name="category" value={transactionInfo.category} onChange={onCategoryChange}>
-          <option hidden>Choose a category</option>
+        <Form.Select
+          name="category"
+          value={transactionInfo.category}
+          onChange={onCategoryChange}
+          required
+        >
+          <option value="" hidden>Choose a category</option>
           {filteredCategoriesByType.map(category => {
             return <option key={category.id} value={category.id}>{category.title}</option>
           })}
@@ -92,7 +103,12 @@ const TransactionForm: React.FC<TransactionFormProps> = ({existingTransaction, i
       </Form.Group>
       <Form.Group className="mt-3">
         <Form.Label>Amount</Form.Label>
-        <Form.Control type="number" name="amount" value={transactionInfo.amount} onChange={onAmountChange}/>
+        <Form.Control
+          type="number"
+          name="amount"
+          value={transactionInfo.amount}
+          onChange={onAmountChange}
+          required/>
       </Form.Group>
       <Form.Group className="mt-4">
         <Button

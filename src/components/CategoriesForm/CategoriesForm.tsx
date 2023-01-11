@@ -49,8 +49,13 @@ const CategoriesForm: React.FC<CategoriesFormProps> = ({existingCategory, id}) =
       <Form className="text-center mt-3" onSubmit={onFormSubmit}>
         <Form.Group>
           <Form.Label>Category type</Form.Label>
-          <Form.Select name="type" value={categoryInfo.type} onChange={onTypeChange}>
-            <option hidden>Choose a type</option>
+          <Form.Select
+            name="type"
+            value={categoryInfo.type}
+            onChange={onTypeChange}
+            required
+          >
+            <option value="" hidden>Choose a type</option>
             <option value="expense">Expense</option>
             <option value="income">Income</option>
           </Form.Select>

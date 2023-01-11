@@ -37,7 +37,7 @@ export const fetchAllTransactions = createAsyncThunk<ExtendedTransactionType[], 
         })
       })
 
-      return extendedTransactions;
+      return extendedTransactions.reverse();
     }
 
     return [];
