@@ -4,6 +4,9 @@ import {Route, Routes} from "react-router-dom";
 import Categories from "./containers/Categories/Categories";
 import NewCategory from "./containers/Categories/NewCategory";
 import EditCategory from "./containers/Categories/EditCategory";
+import Transactions from "./containers/Transactions/Transactions";
+import NewTransaction from "./containers/Transactions/NewTransaction";
+import EditTransaction from "./containers/Transactions/EditTransaction";
 
 function App() {
   return (
@@ -18,6 +21,15 @@ function App() {
           )}/>
           <Route path="/categories/edit-category/:id" element={(
             <EditCategory/>
+          )}/>
+          <Route path="/" element={(
+            <Transactions/>
+          )}/>
+          <Route path="/new-transaction" element={(
+            <NewTransaction/>
+          )}/>
+          <Route path="/edit-transaction/:id" element={(
+            <EditTransaction/>
           )}/>
         </Routes>
       </Layout>
