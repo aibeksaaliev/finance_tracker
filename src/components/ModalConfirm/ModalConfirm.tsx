@@ -37,8 +37,10 @@ const ModalConfirm: React.FC<ModalConfirmProps> = ({id}) => {
           }
         })
         await dispatch(fetchAllCategories());
+        await dispatch(fetchAllTransactions());
       }
     }
+
   };
 
   return (
