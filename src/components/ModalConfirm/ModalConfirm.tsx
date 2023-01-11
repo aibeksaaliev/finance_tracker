@@ -5,7 +5,7 @@ import {
   closeModal,
   confirmDelete,
   selectDeleteStatus,
-  selectModalTransactionStatus
+  selectModalTransactionStatus, selectTransactions
 } from "../../store/TransactionsSlice";
 import {deleteOneTransaction, fetchAllTransactions} from "../../store/TransactionsThunks";
 import {useLocation} from "react-router-dom";
@@ -20,6 +20,7 @@ const ModalConfirm: React.FC<ModalConfirmProps> = ({id}) => {
   const location = useLocation();
   const modalStatus = useAppSelector(selectModalTransactionStatus);
   const confirmStatus = useAppSelector(selectDeleteStatus);
+  const transactions = useAppSelector(selectTransactions);
 
   const deleteCard = async () => {
     dispatch(confirmDelete());
@@ -30,6 +31,11 @@ const ModalConfirm: React.FC<ModalConfirmProps> = ({id}) => {
         await dispatch(fetchAllTransactions());
       } else {
         await dispatch(deleteOneCategory(id));
+        transactions.forEach(transaction => {
+          if (transaction.categoryId === id) {
+            dispatch(deleteOneTransaction(transaction.transactionId));
+          }
+        })
         await dispatch(fetchAllCategories());
       }
     }
